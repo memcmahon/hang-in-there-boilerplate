@@ -146,16 +146,9 @@ savePosterButton.addEventListener("click", storePoster);
 
 // functions and event handlers go here 👇
 // (we've provided two to get you started)!
-function getRandomIndex(array) {
-  return Math.floor(Math.random() * array.length);
-}
-
-function createPoster(imageURL, title, quote) {
-  return {
-    id: Date.now(), 
-    imageURL: imageURL, 
-    title: title, 
-    quote: quote}
+function loadRandomPoster() {
+  currentPoster = getRandomPoster();
+  setImageHTML();
 }
 
 function storePoster(event) {
@@ -167,6 +160,30 @@ function storePoster(event) {
   showMain();
 }
 
+function createPoster(imageURL, title, quote) {
+  return {
+    id: Date.now(), 
+    imageURL: imageURL, 
+    title: title, 
+    quote: quote}
+}
+
+function showForm() {
+  hide(mainPoster);
+  show(newPosterForm)
+}
+
+function showSaved() {
+  hide(mainPoster);
+  show(savedPostersView);
+}
+
+function showMain() {
+  hide(savedPostersView);
+  hide(newPosterForm)
+  show(mainPoster);
+}
+
 function getRandomPoster() {
   var imageIndex = getRandomIndex(images);
   var titleIndex = getRandomIndex(titles);
@@ -175,10 +192,6 @@ function getRandomPoster() {
   return poster;
 }
 
-function loadRandomPoster() {
-  currentPoster = getRandomPoster();
-  setImageHTML();
-}
 
 function savePosterAttributes(newPoster) {
   images.push(newPoster.imageURL);
@@ -198,26 +211,14 @@ function clearForm(){
   quoteField.value = '';
 }
 
-function showForm() {
-  hide(mainPoster);
-  show(newPosterForm)
-}
-
-function showSaved() {
-  hide(mainPoster);
-  show(savedPostersView);
-}
-
-function showMain() {
-  hide(savedPostersView);
-  hide(newPosterForm)
-  show(mainPoster);
-}
-
 function show(element) {
   element.classList.remove('hidden');
 }
 
 function hide(element) {
   element.classList.add('hidden');
+}
+
+function getRandomIndex(array) {
+  return Math.floor(Math.random() * array.length);
 }
