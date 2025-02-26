@@ -1,4 +1,7 @@
 // query selector variables go here 👇
+var image = document.querySelector('img.poster-img');
+var title = document.querySelector('h1.poster-title');
+var quote = document.querySelector('h3.poster-quote');
 
 // we've provided you with some data to work with 👇
 // tip: you can tuck this data out of view with the dropdown found near the line number where the variable is declared 
@@ -100,11 +103,11 @@ var quotes = [
   "A champion is defined not by their wins but by how they can recover when they fall."
 ];
 var savedPosters = [];
-var currentPoster;
+var currentPoster = getRandomPoster();
 
 // event listeners go here 👇
 
-window.addEventListener("load", setCurrentPoster);
+window.addEventListener("load", setPoster);
 
 // functions and event handlers go here 👇
 // (we've provided two to get you started)!
@@ -120,10 +123,16 @@ function createPoster(imageURL, title, quote) {
     quote: quote}
 }
 
-function setCurrentPoster() {
+function getRandomPoster() {
   var imageIndex = getRandomIndex(images);
   var titleIndex = getRandomIndex(titles);
   var quoteIndex = getRandomIndex(quotes);
   var poster = createPoster(images[imageIndex], titles[titleIndex], quotes[quoteIndex]);
-  current_poster = poster;
+  return poster;
+}
+
+function setPoster() {
+  image.src = currentPoster.imageURL;
+  title.innerHTML = currentPoster.title;
+  quote.innerHTML = currentPoster.quote;
 }
