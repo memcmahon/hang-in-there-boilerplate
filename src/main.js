@@ -107,14 +107,14 @@ var quotes = [
   "A champion is defined not by their wins but by how they can recover when they fall."
 ];
 var savedPosters = [];
-var currentPoster = getRandomPoster();
+var currentPoster;
 
 // event listeners go here 👇
 
-window.addEventListener("load", setPoster);
+window.addEventListener("load", loadRandomPoster);
 
 //load random poster
-showRandomButton.addEventListener("click", resetCurrentPoster);
+showRandomButton.addEventListener("click", loadRandomPoster);
 
 // functions and event handlers go here 👇
 // (we've provided two to get you started)!
@@ -138,13 +138,9 @@ function getRandomPoster() {
   return poster;
 }
 
-function setPoster() {
+function loadRandomPoster() {
+  currentPoster = getRandomPoster();
   image.src = currentPoster.imageURL;
   title.innerHTML = currentPoster.title;
   quote.innerHTML = currentPoster.quote;
-}
-
-function resetCurrentPoster() {
-  currentPoster = getRandomPoster();
-  setPoster();
 }
