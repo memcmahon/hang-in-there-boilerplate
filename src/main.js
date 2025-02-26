@@ -7,6 +7,7 @@ var quote = document.querySelector('h3.poster-quote');
 //buttons
 var showRandomButton = document.querySelector('button.show-random');
 var showNewPosterButton = document.querySelector('button.show-form');
+var showMainButton = document.querySelector('button.show-main');
 
 //views
 var mainPoster = document.querySelector('section.main-poster');
@@ -124,6 +125,9 @@ showRandomButton.addEventListener("click", loadRandomPoster);
 // show new poster form
 showNewPosterButton.addEventListener("click", showForm);
 
+// show main
+showMainButton.addEventListener("click", showMain);
+
 // functions and event handlers go here 👇
 // (we've provided two to get you started)!
 function getRandomIndex(array) {
@@ -154,6 +158,11 @@ function loadRandomPoster() {
 }
 
 function showForm() {
+  mainPoster.classList.toggle('hidden');
+  newPosterForm.classList.toggle('hidden');
+}
+
+function showMain() {
   mainPoster.classList.toggle('hidden');
   newPosterForm.classList.toggle('hidden');
 }
