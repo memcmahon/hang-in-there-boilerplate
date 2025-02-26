@@ -4,8 +4,16 @@ var image = document.querySelector('img.poster-img');
 var title = document.querySelector('h1.poster-title');
 var quote = document.querySelector('h3.poster-quote');
 
-//button elements
+//buttons
+var showMainButtons = document.querySelectorAll('button.show-main');
 var showRandomButton = document.querySelector('button.show-random');
+var showNewPosterButton = document.querySelector('button.show-form');
+var showSavedPostersButton = document.querySelector('button.show-saved');
+
+//views
+var mainPoster = document.querySelector('section.main-poster');
+var newPosterForm = document.querySelector('section.poster-form');
+var savedPostersView = document.querySelector('section.saved-posters');
 
 // we've provided you with some data to work with 👇
 // tip: you can tuck this data out of view with the dropdown found near the line number where the variable is declared 
@@ -116,6 +124,17 @@ window.addEventListener("load", loadRandomPoster);
 //load random poster
 showRandomButton.addEventListener("click", loadRandomPoster);
 
+// show main
+showMainButtons.forEach((button) => {
+  button.addEventListener("click", showMain);
+})
+
+// show new poster form
+showNewPosterButton.addEventListener("click", showForm);
+
+// show saved posters
+showSavedPostersButton.addEventListener("click", showSaved);
+
 // functions and event handlers go here 👇
 // (we've provided two to get you started)!
 function getRandomIndex(array) {
@@ -143,4 +162,28 @@ function loadRandomPoster() {
   image.src = currentPoster.imageURL;
   title.innerHTML = currentPoster.title;
   quote.innerHTML = currentPoster.quote;
+}
+
+function showForm() {
+  hide(mainPoster);
+  show(newPosterForm)
+}
+
+function showSaved() {
+  hide(mainPoster);
+  show(savedPostersView);
+}
+
+function showMain() {
+  hide(savedPostersView);
+  hide(newPosterForm)
+  show(mainPoster);
+}
+
+function show(element) {
+  element.classList.remove('hidden');
+}
+
+function hide(element) {
+  element.classList.add('hidden');
 }
