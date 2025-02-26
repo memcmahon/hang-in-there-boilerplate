@@ -104,6 +104,8 @@ var currentPoster;
 
 // event listeners go here 👇
 
+window.addEventListener("load", setCurrentPoster);
+
 // functions and event handlers go here 👇
 // (we've provided two to get you started)!
 function getRandomIndex(array) {
@@ -116,4 +118,12 @@ function createPoster(imageURL, title, quote) {
     imageURL: imageURL, 
     title: title, 
     quote: quote}
+}
+
+function setCurrentPoster() {
+  var imageIndex = getRandomIndex(images);
+  var titleIndex = getRandomIndex(titles);
+  var quoteIndex = getRandomIndex(quotes);
+  var poster = createPoster(images[imageIndex], titles[titleIndex], quotes[quoteIndex]);
+  current_poster = poster;
 }
