@@ -9,11 +9,17 @@ var showMainButtons = document.querySelectorAll('button.show-main');
 var showRandomButton = document.querySelector('button.show-random');
 var showNewPosterButton = document.querySelector('button.show-form');
 var showSavedPostersButton = document.querySelector('button.show-saved');
+var savePosterButton = document.querySelector('button.make-poster');
 
 //views
 var mainPoster = document.querySelector('section.main-poster');
 var newPosterForm = document.querySelector('section.poster-form');
 var savedPostersView = document.querySelector('section.saved-posters');
+
+// form fields
+var imageUrlField = document.querySelector('input[name="poster-image-url"]')
+var titleField = document.querySelector('input[name="poster-title"]')
+var quoteField = document.querySelector('input[name="poster-quote"]')
 
 // we've provided you with some data to work with 👇
 // tip: you can tuck this data out of view with the dropdown found near the line number where the variable is declared 
@@ -135,6 +141,9 @@ showNewPosterButton.addEventListener("click", showForm);
 // show saved posters
 showSavedPostersButton.addEventListener("click", showSaved);
 
+// make poster from form
+savePosterButton.addEventListener("click", storePoster);
+
 // functions and event handlers go here 👇
 // (we've provided two to get you started)!
 function getRandomIndex(array) {
@@ -149,6 +158,15 @@ function createPoster(imageURL, title, quote) {
     quote: quote}
 }
 
+function storePoster(event) {
+  event.preventDefault();
+  currentPoster = createPoster(imageUrlField.value, titleField.value, quoteField.value)
+  savePosterAttributes(currentPoster)
+  setImageHTML();
+  clearForm();
+  showMain();
+}
+
 function getRandomPoster() {
   var imageIndex = getRandomIndex(images);
   var titleIndex = getRandomIndex(titles);
@@ -159,9 +177,25 @@ function getRandomPoster() {
 
 function loadRandomPoster() {
   currentPoster = getRandomPoster();
+  setImageHTML();
+}
+
+function savePosterAttributes(newPoster) {
+  images.push(newPoster.imageURL);
+  titles.push(newPoster.title);
+  quotes.push(newPoster.quote);
+}
+
+function setImageHTML() {
   image.src = currentPoster.imageURL;
   title.innerHTML = currentPoster.title;
   quote.innerHTML = currentPoster.quote;
+}
+
+function clearForm(){
+  imageUrlField.value = '';
+  titleField.value = '';
+  quoteField.value = '';
 }
 
 function showForm() {
