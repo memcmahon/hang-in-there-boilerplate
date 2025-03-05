@@ -154,14 +154,14 @@ showSavedPostersButton.addEventListener("click", showSaved);
 // (we've provided two to get you started)!
 function loadRandomPoster() {
   currentPoster = getRandomPoster();
-  setImageHTML();
+  setCurrentImageHtml();
 }
 
 function storePoster(event) {
   event.preventDefault();
   currentPoster = createPoster(imageUrlField.value, titleField.value, quoteField.value)
   savePosterAttributes(currentPoster)
-  setImageHTML();
+  setCurrentImageHtml();
   clearForm();
   showMain();
 }
@@ -171,24 +171,7 @@ function savePoster() {
 }
 
 function addToSaved(poster) {
-  // var alreadySaved = false;
-
-  // savedPosters.forEach((savedPoster) => {
-  //   if (savedPoster.title == poster.title && savedPoster.quote == poster.quote && savedPoster.imageURL) {
-  //     alreadySaved = true;
-  //     console.log("Identical poster already saved.");
-  //     return; // don't keep looking if identical found
-  //   }
-  // });
-
-  var alreadySaved = savedPosters.some((savedPoster) => {
-    if (savedPoster.title == poster.title && savedPoster.quote == poster.quote && savedPoster.imageURL) {
-      return true;
-    }
-    return false;
-  })
-
-  if (alreadySaved) {
+  if (alreadySaved(poster)) {
     console.log("Identical poster already saved.");
   } else {
     savedPosters.push(poster);
@@ -220,14 +203,6 @@ function showMain() {
   show(mainPoster);
 }
 
-function setSavedImagesHtml() {
-  var html = ""
-  savedPosters.forEach((poster) => {
-    html += setMiniPosterHTML(poster);
-  })
-  savedPostersGrid.innerHTML = html;
-}
-
 function getRandomPoster() {
   var imageIndex = getRandomIndex(images);
   var titleIndex = getRandomIndex(titles);
@@ -236,26 +211,42 @@ function getRandomPoster() {
   return poster;
 }
 
-
 function savePosterAttributes(newPoster) {
   images.push(newPoster.imageURL);
   titles.push(newPoster.title);
   quotes.push(newPoster.quote);
 }
 
-function setImageHTML() {
+function setSavedImagesHtml() {
+  var html = ""
+  savedPosters.forEach((poster) => {
+    html += setMiniPosterHtml(poster);
+  })
+  savedPostersGrid.innerHTML = html;
+}
+
+function setCurrentImageHtml() {
   image.src = currentPoster.imageURL;
   title.innerHTML = currentPoster.title;
   quote.innerHTML = currentPoster.quote;
 }
 
-function setMiniPosterHTML(poster) {
+function setMiniPosterHtml(poster) {
   return `<article class="mini-poster">
         <img src="${poster.imageURL}" alt="nothin' to see here">
         <h2>${poster.title}</h2>
         <h4>${poster.quote}</h4>
       </article>
     `
+}
+
+function alreadySaved(poster) {
+  return savedPosters.some((savedPoster) => {
+    if (savedPoster.title == poster.title && savedPoster.quote == poster.quote && savedPoster.imageURL) {
+      return true;
+    }
+    return false;
+  })
 }
 
 function clearForm(){
