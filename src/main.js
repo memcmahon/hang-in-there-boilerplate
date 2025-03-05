@@ -17,8 +17,9 @@ var newPosterButton = document.querySelector('button.make-poster');
 var mainPoster = document.querySelector('section.main-poster');
 var newPosterForm = document.querySelector('section.poster-form');
 var savedPostersView = document.querySelector('section.saved-posters');
-var unmotivationalPostersView = document.querySelector('section.unmotivational-posters');
 var savedPostersGrid = document.querySelector('.saved-posters-grid');
+var unmotivationalPostersView = document.querySelector('section.unmotivational-posters');
+var unmotivationalPostersGrid = document.querySelector('.unmotivational-posters-grid');
 
 // form fields
 var imageUrlField = document.querySelector('input[name="poster-image-url"]')
@@ -246,6 +247,7 @@ var unmotivationalPostersRaw = [
     img_url: "./assets/doubt.jpg",
   }
 ];
+var unmotivationalPosters = [];
 var savedPosters = [];
 var currentPoster;
 
@@ -315,22 +317,20 @@ function createPoster(imageURL, title, quote) {
 
 function showForm() {
   hide(mainPoster);
-  // hide(unmotivationalPostersView);
   show(newPosterForm)
 }
 
 function showSaved() {
   hide(mainPoster);
-  // hide(unmotivationalPostersView);
   show(savedPostersView);
   setSavedImagesHtml();
 }
 
 function showUnmotivational() {
   hide(mainPoster);
-  // hide(newPosterForm);
-  // hide(savedPostersView);
   show(unmotivationalPostersView);
+  cleanUnmotivationalPosters();
+  setUnmotivationalImagesHtml();
 }
 
 function showMain() {
@@ -354,18 +354,26 @@ function savePosterAttributes(newPoster) {
   quotes.push(newPoster.quote);
 }
 
+function setCurrentImageHtml() {
+  image.src = currentPoster.imageURL;
+  title.innerHTML = currentPoster.title;
+  quote.innerHTML = currentPoster.quote;
+}
+
 function setSavedImagesHtml() {
-  var html = ""
+  let html = "";
   savedPosters.forEach((poster) => {
     html += setMiniPosterHtml(poster);
   })
   savedPostersGrid.innerHTML = html;
 }
 
-function setCurrentImageHtml() {
-  image.src = currentPoster.imageURL;
-  title.innerHTML = currentPoster.title;
-  quote.innerHTML = currentPoster.quote;
+function setUnmotivationalImagesHtml() {
+  let html = "";
+  unmotivationalPosters.forEach((poster) => {
+    html += setMiniPosterHtml(poster);
+  })
+  unmotivationalPostersGrid.innerHTML = html;
 }
 
 function setMiniPosterHtml(poster) {
@@ -383,6 +391,12 @@ function alreadySaved(poster) {
       return true;
     }
     return false;
+  })
+}
+
+function cleanUnmotivationalPosters() {
+  unmotivationalPostersRaw.forEach((input) => {
+    unmotivationalPosters.push(createPoster(input.img_url, input.name, input.description));
   })
 }
 
