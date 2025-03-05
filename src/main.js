@@ -9,7 +9,8 @@ var showMainButtons = document.querySelectorAll('button.show-main');
 var showRandomButton = document.querySelector('button.show-random');
 var showNewPosterButton = document.querySelector('button.show-form');
 var showSavedPostersButton = document.querySelector('button.show-saved');
-var savePosterButton = document.querySelector('button.make-poster');
+var savePosterButton = document.querySelector('button.save-poster');
+var newPosterButton = document.querySelector('button.make-poster');
 
 //views
 var mainPoster = document.querySelector('section.main-poster');
@@ -133,16 +134,20 @@ showRandomButton.addEventListener("click", loadRandomPoster);
 // show main
 showMainButtons.forEach((button) => {
   button.addEventListener("click", showMain);
-})
+});
 
 // show new poster form
 showNewPosterButton.addEventListener("click", showForm);
 
+// make poster from form
+newPosterButton.addEventListener("click", storePoster);
+
+// save poster
+savePosterButton.addEventListener("click", savePoster);
+
 // show saved posters
 showSavedPostersButton.addEventListener("click", showSaved);
 
-// make poster from form
-savePosterButton.addEventListener("click", storePoster);
 
 // functions and event handlers go here 👇
 // (we've provided two to get you started)!
@@ -158,6 +163,35 @@ function storePoster(event) {
   setImageHTML();
   clearForm();
   showMain();
+}
+
+function savePoster() {
+  addToSaved(currentPoster);
+}
+
+function addToSaved(poster) {
+  // var alreadySaved = false;
+
+  // savedPosters.forEach((savedPoster) => {
+  //   if (savedPoster.title == poster.title && savedPoster.quote == poster.quote && savedPoster.imageURL) {
+  //     alreadySaved = true;
+  //     console.log("Identical poster already saved.");
+  //     return; // don't keep looking if identical found
+  //   }
+  // });
+
+  var alreadySaved = savedPosters.some((savedPoster) => {
+    if (savedPoster.title == poster.title && savedPoster.quote == poster.quote && savedPoster.imageURL) {
+      return true;
+    }
+    return false;
+  })
+
+  if (alreadySaved) {
+    console.log("Identical poster already saved.");
+  } else {
+    savedPosters.push(poster);
+  }
 }
 
 function createPoster(imageURL, title, quote) {
