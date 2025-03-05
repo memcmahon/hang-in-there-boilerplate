@@ -16,6 +16,7 @@ var newPosterButton = document.querySelector('button.make-poster');
 var mainPoster = document.querySelector('section.main-poster');
 var newPosterForm = document.querySelector('section.poster-form');
 var savedPostersView = document.querySelector('section.saved-posters');
+var savedPostersGrid = document.querySelector('.saved-posters-grid');
 
 // form fields
 var imageUrlField = document.querySelector('input[name="poster-image-url"]')
@@ -210,12 +211,21 @@ function showForm() {
 function showSaved() {
   hide(mainPoster);
   show(savedPostersView);
+  setSavedImagesHtml();
 }
 
 function showMain() {
   hide(savedPostersView);
   hide(newPosterForm)
   show(mainPoster);
+}
+
+function setSavedImagesHtml() {
+  var html = ""
+  savedPosters.forEach((poster) => {
+    html += setMiniPosterHTML(poster);
+  })
+  savedPostersGrid.innerHTML = html;
 }
 
 function getRandomPoster() {
@@ -237,6 +247,15 @@ function setImageHTML() {
   image.src = currentPoster.imageURL;
   title.innerHTML = currentPoster.title;
   quote.innerHTML = currentPoster.quote;
+}
+
+function setMiniPosterHTML(poster) {
+  return `<article class="mini-poster">
+        <img src="${poster.imageURL}" alt="nothin' to see here">
+        <h2>${poster.title}</h2>
+        <h4>${poster.quote}</h4>
+      </article>
+    `
 }
 
 function clearForm(){
