@@ -9,14 +9,16 @@ var showMainButtons = document.querySelectorAll('button.show-main');
 var showRandomButton = document.querySelector('button.show-random');
 var showNewPosterButton = document.querySelector('button.show-form');
 var showSavedPostersButton = document.querySelector('button.show-saved');
-var savePosterButton = document.querySelector('button.make-poster');
 var showUnmotivationalPostersButton = document.querySelector('button.show-unmotivational');
+var savePosterButton = document.querySelector('button.save-poster');
+var newPosterButton = document.querySelector('button.make-poster');
 
 //views
 var mainPoster = document.querySelector('section.main-poster');
 var newPosterForm = document.querySelector('section.poster-form');
 var savedPostersView = document.querySelector('section.saved-posters');
 var unmotivationalPostersView = document.querySelector('section.unmotivational-posters');
+var savedPostersGrid = document.querySelector('.saved-posters-grid');
 
 // form fields
 var imageUrlField = document.querySelector('input[name="poster-image-url"]')
@@ -257,16 +259,20 @@ showRandomButton.addEventListener("click", loadRandomPoster);
 // show main
 showMainButtons.forEach((button) => {
   button.addEventListener("click", showMain);
-})
+});
 
 // show new poster form
 showNewPosterButton.addEventListener("click", showForm);
 
+// make poster from form
+newPosterButton.addEventListener("click", storePoster);
+
+// save poster
+savePosterButton.addEventListener("click", savePoster);
+
 // show saved posters
 showSavedPostersButton.addEventListener("click", showSaved);
 
-// make poster from form
-savePosterButton.addEventListener("click", storePoster);
 
 // show unmotivational posters
 showUnmotivationalPostersButton.addEventListener("click", showUnmotivational);
@@ -275,16 +281,28 @@ showUnmotivationalPostersButton.addEventListener("click", showUnmotivational);
 // (we've provided two to get you started)!
 function loadRandomPoster() {
   currentPoster = getRandomPoster();
-  setImageHTML();
+  setCurrentImageHtml();
 }
 
 function storePoster(event) {
   event.preventDefault();
   currentPoster = createPoster(imageUrlField.value, titleField.value, quoteField.value)
   savePosterAttributes(currentPoster)
-  setImageHTML();
+  setCurrentImageHtml();
   clearForm();
   showMain();
+}
+
+function savePoster() {
+  addToSaved(currentPoster);
+}
+
+function addToSaved(poster) {
+  if (alreadySaved(poster)) {
+    console.log("Identical poster already saved.");
+  } else {
+    savedPosters.push(poster);
+  }
 }
 
 function createPoster(imageURL, title, quote) {
@@ -305,6 +323,7 @@ function showSaved() {
   hide(mainPoster);
   // hide(unmotivationalPostersView);
   show(savedPostersView);
+  setSavedImagesHtml();
 }
 
 function showUnmotivational() {
@@ -329,17 +348,42 @@ function getRandomPoster() {
   return poster;
 }
 
-
 function savePosterAttributes(newPoster) {
   images.push(newPoster.imageURL);
   titles.push(newPoster.title);
   quotes.push(newPoster.quote);
 }
 
-function setImageHTML() {
+function setSavedImagesHtml() {
+  var html = ""
+  savedPosters.forEach((poster) => {
+    html += setMiniPosterHtml(poster);
+  })
+  savedPostersGrid.innerHTML = html;
+}
+
+function setCurrentImageHtml() {
   image.src = currentPoster.imageURL;
   title.innerHTML = currentPoster.title;
   quote.innerHTML = currentPoster.quote;
+}
+
+function setMiniPosterHtml(poster) {
+  return `<article class="mini-poster">
+        <img src="${poster.imageURL}" alt="nothin' to see here">
+        <h2>${poster.title}</h2>
+        <h4>${poster.quote}</h4>
+      </article>
+    `
+}
+
+function alreadySaved(poster) {
+  return savedPosters.some((savedPoster) => {
+    if (savedPoster.title == poster.title && savedPoster.quote == poster.quote && savedPoster.imageURL) {
+      return true;
+    }
+    return false;
+  })
 }
 
 function clearForm(){
